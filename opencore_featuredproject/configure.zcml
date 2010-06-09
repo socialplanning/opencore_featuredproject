@@ -2,9 +2,11 @@
   <view
     for="opencore.interfaces.IOpenSiteRoot"
     class=".browser.LatestFeaturedProjectView"
-    name="latest-featured-project"
+    name="featured-projects"
     permission="zope2.View"
+    template="featured-projects.pt"
     />
+
   <page
     for="opencore.interfaces.IOpenSiteRoot"
     class=".browser.FeatureProjectView"

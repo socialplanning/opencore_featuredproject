@@ -3,6 +3,7 @@ from Products.CMFCore.utils import getToolByName
 from datetime import datetime
 from zope.app.annotation.interfaces import IAnnotations
 from zope.app.component.hooks import getSite
+from persistent.dict import PersistentDict
 
 def get_featured_project_structure():
     context = getSite()
@@ -14,25 +15,19 @@ def get_featured_project_structure():
         annot['opencore.feature-project'] = featured_structure
     return featured_structure
 
-def feature_project(project_id):
+def feature_project(project_id, description):
     """this stores the project_id in an annotation on the portal"""
     featured_structure = get_featured_project_structure()
-    index = get_index_of_latest_project(featured_structure)
-    if index is None:
-        index = 0
-    else:
-        index += 1
-    featured_structure[index] = dict(project_id=project_id,
-                                     timestamp=datetime.now(),
-                                     )
+    featured_structure[project_id] = PersistentDict(
+        project_id=project_id,
+        timestamp=datetime.now(),
+        description=description,
+        )
 
 def get_featured_project_metadata():
     """get some metadata latest featured project, or None"""
     featured_structure = get_featured_project_structure()
-    index = get_index_of_latest_project(featured_structure)
-    if index is None:
-        return None
-    return featured_structure[index]
+    return featured_structure.values()
 
 def get_index_of_latest_project(featured_structure):
     idxs = featured_structure.keys()
