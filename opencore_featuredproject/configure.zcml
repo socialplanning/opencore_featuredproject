@@ -1,6 +1,6 @@
 <configure xmlns="http://namespaces.zope.org/browser">
 
-  <view
+  <page
     for="opencore.interfaces.IOpenSiteRoot"
     class=".browser.LatestFeaturedProjectView"
     name="featured-projects"

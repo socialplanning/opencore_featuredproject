@@ -1,4 +1,4 @@
-from BTrees.IOBTree import IOBTree
+from BTrees.OOBTree import OOBTree
 from Products.CMFCore.utils import getToolByName
 from datetime import datetime
 from zope.app.annotation.interfaces import IAnnotations
@@ -11,18 +11,18 @@ def get_featured_project_structure():
     annot = IAnnotations(portal)
     featured_structure = annot.get('opencore.feature-project', None)
     if featured_structure is None:
-        featured_structure = IOBTree()
+        featured_structure = OOBTree()
         annot['opencore.feature-project'] = featured_structure
     return featured_structure
 
 def feature_project(project_id, description):
     """this stores the project_id in an annotation on the portal"""
     featured_structure = get_featured_project_structure()
-    featured_structure[project_id] = PersistentDict(
-        project_id=project_id,
-        timestamp=datetime.now(),
-        description=description,
-        )
+    data = PersistentDict()
+    data['project_id'] = project_id
+    data['timestamp'] = datetime.now()
+    data['description'] = description
+    featured_structure[project_id] = data
 
 def get_featured_project_metadata():
     """get some metadata latest featured project, or None"""

@@ -1,12 +1,13 @@
 <form method="POST" 
-      tal:attributes="action string:${view/portal}/feature-project">
+      tal:define="process view/process"
+      tal:attributes="action string:${view/portal/absolute_url}/feature-project">
 
   <label for="project_id">Project ID</label>
-  <input type="text" name="project_id"></input>
+  <input type="text" name="project_id" />
 
   <label for="description">Description</label>
-  <input type="textarea" name="description"></input>
+  <textarea name="description"></textarea>
 
-  <input type="submit"></input>
+  <input type="submit" />
 
 </form>
