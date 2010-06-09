@@ -11,9 +11,10 @@ class FeatureProjectView(BaseView):
         return self.request.response.redirect(portal_url + '/projects')
 
     def __call__(self):
-        portal_url = getToolByName(self.context, 'portal_url')()
         if self.request.environ['REQUEST_METHOD'] != 'POST':
-            return self.response()
+            return self.render()
+
+        portal_url = getToolByName(self.context, 'portal_url')()
 
         project_id = self.request.form.get('project_id', None)
         if project_id is None:
@@ -26,8 +27,8 @@ class FeatureProjectView(BaseView):
         except KeyError:
             return self.response()
 
-        desc = self.request.form.get('description', None)
-        if desc is None:
+        desc = self.request.form.get('description', '')
+        if desc == '':
             desc = project.Description()
 
         feature_project(project_id, desc)

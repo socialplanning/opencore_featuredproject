@@ -1,4 +1,5 @@
 <configure xmlns="http://namespaces.zope.org/browser">
+
   <view
     for="opencore.interfaces.IOpenSiteRoot"
     class=".browser.LatestFeaturedProjectView"
@@ -12,5 +13,7 @@
     class=".browser.FeatureProjectView"
     name="feature-project"
     permission="cmf.ModifyPortalContent"
+    template="form.pt"
     />
+
 </configure>
