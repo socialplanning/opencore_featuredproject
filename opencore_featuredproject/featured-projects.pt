@@ -1,12 +1,20 @@
-<dl>
+<dl id="featured_projects">
   <tal:for repeat="item view/featured_projects">
-    <dt tal:define="project python:view.get_project(item['project_id'])">
-      <a tal:attributes="href project/absolute_url"
+   <tal:var define="project python:view.get_project(item['project_id'])">
+    <dt>
+      <a class="title" tal:attributes="href project/absolute_url"
 	 tal:content="project/Title">
       </a>
     </dt>
 
-    <dd tal:content="item/description">
+    <dd>
+      <a class="logo" tal:attributes="href project/absolute_url">
+	<img tal:attributes="src string:${project/absolute_url}/logo_thumb" />
+      </a>
+
+      <div class="description" tal:content="item/description" />
+
     </dd>
+   </tal:var>
   </tal:for>
 </dl>
