@@ -2,7 +2,7 @@ from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
 from opencore.browser.base import BaseView
 from opencore_featuredproject import feature_project
-from opencore_featuredproject import get_featured_project_metadata
+from opencore_featuredproject import get_featured_projects
 
 class FeatureProjectView(BaseView):
     """handle posting to feature a new project"""
@@ -49,7 +49,8 @@ class LatestFeaturedProjectView(BrowserView):
             project = portal['projects'][project_id]
         except KeyError:
             return None
-        
+        return project
+
     def featured_projects(self, num=5):
-        data = get_featured_project_metadata()
+        data = get_featured_projects()
         return data[:num]

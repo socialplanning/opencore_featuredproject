@@ -1,38 +1,31 @@
-from BTrees.OOBTree import OOBTree
 from Products.CMFCore.utils import getToolByName
 from datetime import datetime
-from zope.app.annotation.interfaces import IAnnotations
 from zope.app.component.hooks import getSite
-from persistent.dict import PersistentDict
-
-def get_featured_project_structure():
-    context = getSite()
-    portal = getToolByName(context, 'portal_url').getPortalObject()
-    annot = IAnnotations(portal)
-    featured_structure = annot.get('opencore.feature-project', None)
-    if featured_structure is None:
-        featured_structure = OOBTree()
-        annot['opencore.feature-project'] = featured_structure
-    return featured_structure
+from opencore.utils import get_config
+import os
 
 def feature_project(project_id, description):
-    """this stores the project_id in an annotation on the portal"""
-    featured_structure = get_featured_project_structure()
-    data = PersistentDict()
-    data['project_id'] = project_id
-    data['timestamp'] = datetime.now()
-    data['description'] = description
-    featured_structure[project_id] = data
+    """this stores the project_id in a file """
+    feature_dir = get_config("featured_project_dir")
+    assert os.path.exists(feature_dir)
+    assert os.path.isdir(feature_dir)
+    filename = os.path.join(feature_dir, project_id)
+    fp = open(filename, 'w')
+    fp.write(description)
+    fp.close()
 
-def get_featured_project_metadata():
+def get_featured_projects():
     """get some metadata latest featured project, or None"""
-    featured_structure = get_featured_project_structure()
-    return featured_structure.values()
-
-def get_index_of_latest_project(featured_structure):
-    idxs = featured_structure.keys()
-    n = len(idxs)
-    if n == 0:
-        return None
-    else:
-        return n - 1
+    feature_dir = get_config("featured_project_dir")
+    assert os.path.exists(feature_dir)
+    assert os.path.isdir(feature_dir)
+    projects = os.listdir(feature_dir)
+    features = []
+    for project in projects:
+        if project.startswith('.'): continue
+        if project.endswith('~'): continue
+        fp = open(os.path.join(feature_dir, project))
+        desc = fp.read()
+        fp.close()
+        features.append({'project_id': project, 'description': desc})
+    return features
