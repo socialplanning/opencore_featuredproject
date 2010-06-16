@@ -16,9 +16,7 @@ def feature_project(project_id, description):
 
 def get_featured_projects():
     """get some metadata latest featured project, or None"""
-    feature_dir = get_config("featured_project_dir")
-    assert os.path.exists(feature_dir)
-    assert os.path.isdir(feature_dir)
+    feature_dir = get_feature_dir()
     projects = os.listdir(feature_dir)
     features = []
     for project in projects:
@@ -29,3 +27,20 @@ def get_featured_projects():
         fp.close()
         features.append({'project_id': project, 'description': desc})
     return features
+
+def get_feature_dir():
+    feature_dir = get_config("featured_project_dir")
+    assert os.path.exists(feature_dir)
+    assert os.path.isdir(feature_dir)
+    return feature_dir
+
+def remove_featured_project(proj_id):
+    assert ".." not in proj_id and "/" not in proj_id
+    feature_dir = get_feature_dir()
+    feature_path = os.path.join(feature_dir,
+                                proj_id)
+    if not os.path.exists(feature_path):
+        return False
+    assert os.path.isfile(feature_path)
+    os.remove(feature_path)
+    return True
