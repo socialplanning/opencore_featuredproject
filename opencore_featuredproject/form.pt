@@ -1,18 +1,36 @@
+<html i18n:domain="opencore" metal:use-macro="here/@@standard_macros/master">
+<body>
+<div metal:fill-slot="content">
+
+<h2 class="oc-dataTable-heading">
+Add New Feature
+</h2>
 <form id="add-featured-project"
       method="POST" 
       tal:define="process view/process"
       action="./feature-project">
 
+<table class="oc-dataTable">
+<tr>
+  <td>
   <label for="project_id">Project ID</label>
   <input type="text" name="project_id" />
-
+  </td>
+  <td>
   <label for="description">Description</label>
   <textarea name="description"></textarea>
-
+  </td>
   <input type="hidden" name="action" value="add" />
-
+  <td>
   <input type="submit" />
+  </td>
+</tr>
+</table>
 </form>
+
+<h2 class="oc-dataTable-heading">
+Edit/Remove Features
+</h2>
 
 <tal:for tal:repeat="item view/featured_projects">
   <tal:def define="project python:view.get_project(item['project_id'])">
@@ -20,7 +38,7 @@
 	  action="./feature-project">
       <input type="hidden" name="action" 
 	     tal:attributes="value item/project_id" />
-      <table>
+      <table class="oc-dataTable">
 	<tr>
 	  <td>
 	    <input type="submit" name="submit" value="Remove" />
@@ -44,3 +62,6 @@
   </tal:def>
 </tal:for>
 
+</div>
+</body>
+</html>
