@@ -12,7 +12,7 @@
 	
 	<div class="featuredproject_desc">
 	  <a class="logo" tal:attributes="href project/absolute_url">
-	    <img tal:attributes="src string:${project/absolute_url}/logo_thumb" />
+	    <img tal:attributes="src string:${project/absolute_url}/logo" />
 	  </a>
 	  
 	  <div class="description" tal:content="item/description" />
